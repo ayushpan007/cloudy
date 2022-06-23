@@ -1,13 +1,13 @@
-FROM mcr.microsoft.com/dotnet/core/sdk:2.2 AS build-env
-WORKDIR /app
-# Copy csproj and restore as distinct layers
-COPY *.csproj ./
+FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
+WORKDIR /src
+#COPY ["DemoAPIAzure467/DemoAPIAzure467.csproj", "DemoAzureApi/"]
+#COPY /DemoAPIAzure467/DemoAPIAzure467.csproj .
+COPY CICDWebApiDemo.csproj .
 RUN dotnet restore
-# Copy everything else and build
-COPY . ./
-RUN dotnet publish -c Release -o out
-# Build runtime image
-FROM mcr.microsoft.com/dotnet/core/aspnet:2.2
+COPY . .
+RUN dotnet publish -c release -o /app
+
+FROM mcr.microsoft.com/dotnet/aspnet:5.0
 WORKDIR /app
-COPY --from=build-env /app/out .
+COPY --from=build /app .
 ENTRYPOINT ["dotnet", "CloudDemoAppIn.dll"]
