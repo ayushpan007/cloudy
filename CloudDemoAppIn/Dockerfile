@@ -2,7 +2,7 @@ FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 WORKDIR /src
 #COPY ["DemoAPIAzure467/DemoAPIAzure467.csproj", "DemoAzureApi/"]
 #COPY /DemoAPIAzure467/DemoAPIAzure467.csproj .
-COPY CICDWebApiDemo.csproj .
+COPY CloudDemoAppIn.csproj .
 RUN dotnet restore
 COPY . .
 RUN dotnet publish -c release -o /app
